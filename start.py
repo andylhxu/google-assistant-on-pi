@@ -15,9 +15,11 @@
 """Sample that implements a gRPC client for the Google Assistant API."""
 # constants
 
+# change these params
 GPIO_LED = 4
 GPIO_FORCE = 23
-GSR_TIMEOUT = 3
+GSR_TIMEOUT = None
+GSR_PHRASE_LENGTH_LIMIT_IN_SECONDS = 5
 
 # global var
 SHOULD_ASSIST = False
@@ -288,7 +290,7 @@ def wait_for_okay_google():
      with sr.Microphone() as source:
          print('[GSR][{}] Listening...'.format(datetime.datetime.now().isoformat()))
          try:
-             audio = r.listen(source, phrase_time_limit=GSR_TIMEOUT)
+             audio = r.listen(source, timeout=GSR_TIMEOUT, phrase_time_limit=GSR_PHRASE_LENGTH_LIMIT_IN_SECONDS)
              result = r.recognize_google(audio)
              print("[GSR] Heard: " + result)
              if ('OK Google' in result):
